@@ -3,24 +3,47 @@ import { JSXGraph } from "jsxgraph";
 import Toolbar from "./Toolbar";
 import Board from "./Board";
 
-const actions = {
-  select: (e, board) => {},
-  point: (e, board) => {
-    console.log("point has been called");
-    const coords = board.getUsrCoordsOfMouse(e);
-    board.create("point", coords);
-  },
-  line: (e, board) => {},
-  polygon: (e, board) => {},
-  circle: (e, board) => {},
-};
-
 function BoardView() {
   const boardRef = useRef(null);
   const [board, setBoard] = useState(null);
   const [mode, setMode] = useState("select");
   const actionRef = useRef(null);
   const [selected, setSelected] = useState([]);
+
+  const actions = {
+    select: (e) => {},
+    point: (e) => {
+      const coords = board.getUsrCoordsOfMouse(e);
+      board.create("point", coords);
+    },
+    line: (e) => {
+      const point = getSelectedObject(e);
+      if (!point) return;
+
+      setSelected((prev) => {
+        if (prev.length === 0) {
+          return [point];
+        } else {
+          board.create("line", [prev[0], point]);
+          return [];
+        }
+      });
+    },
+    polygon: (e) => {},
+    circle: (e) => {
+      const point = getSelectedObject(e);
+      if (!point) return;
+
+      setSelected((prev) => {
+        if (prev.length === 0) {
+          return [point];
+        } else {
+          board.create("circle", [prev[0], point]);
+          return [];
+        }
+      });
+    },
+  };
 
   function handleSetAction(newMode) {
     if (!board) return;
@@ -29,13 +52,19 @@ function BoardView() {
       board.off("down", actionRef.current);
     }
 
-    const newAction = (e) => actions[newMode](e, board);
-    console.log("newAction derives from", actions[newMode]);
+    const newAction = (e) => actions[newMode](e);
     board.on("down", newAction);
     actionRef.current = newAction;
-    console.log("set the action to", actionRef.current);
 
     setMode(newMode);
+  }
+
+  function getSelectedObject(e) {
+    const objects = board.getAllObjectsUnderMouse(e);
+    if (objects.length === 0) return null;
+    const object = objects[0];
+    if (object.elType !== "point") return null;
+    return object;
   }
 
   useEffect(() => {
