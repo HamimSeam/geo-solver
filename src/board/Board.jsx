@@ -1,7 +1,7 @@
 import { JSXGraph } from "jsxgraph";
 import { useRef, useEffect } from "react";
 
-function Board({ boardRef }) {
+function Board({ boardRef, onAction }) {
   return (
     <div
       ref={boardRef}
@@ -11,6 +11,7 @@ function Board({ boardRef }) {
         width: "1500px",
         height: "750px",
       }}
+      onClick={onAction}
     ></div>
   );
 }

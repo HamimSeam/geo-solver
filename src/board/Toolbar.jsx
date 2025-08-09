@@ -11,20 +11,14 @@ function ToolbarButton({ text, onClick }) {
   );
 }
 
-function Toolbar({ board }) {
-  function handlePoint() {
-    board.on("down", function (e) {
-      const coords = board.getUsrCoordsOfMouse(e);
-      board.create("point", coords);
-    });
-  }
-
+function Toolbar({ onSetAction }) {
   return (
     <div className="bg-amber-600 p-1 text-white flex gap-2">
-      <ToolbarButton text="Point" onClick={handlePoint} />
-      <ToolbarButton text="Line" />
-      <ToolbarButton text="Polygon" />
-      <ToolbarButton text="Circle" />
+      <ToolbarButton text="🫳" onClick={() => onSetAction("select")} />
+      <ToolbarButton text="Point" onClick={() => onSetAction("point")} />
+      <ToolbarButton text="Line" onClick={() => onSetAction("line")} />
+      <ToolbarButton text="Polygon" onClick={() => onSetAction("polygon")} />
+      <ToolbarButton text="Circle" onClick={() => onSetAction("circle")} />
     </div>
   );
 }
