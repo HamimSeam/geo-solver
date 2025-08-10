@@ -1,4 +1,12 @@
 @import "tailwindcss";
+@import "tailwindcss/preflight"
+@tailwind utilities;
+
+@layer base {
+    th, td {
+        @apply border-2 p-3
+    }
+}
 
 body {
     margin: 0px;

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { JSXGraph } from "jsxgraph";
-import Toolbar from "./Toolbar";
-import Board from "./Board";
+import Toolbar from "../board/Toolbar";
+import Board from "../board/Board";
 
 function BoardView() {
   const boardRef = useRef(null);
@@ -29,7 +29,21 @@ function BoardView() {
         }
       });
     },
-    polygon: (e) => {},
+    polygon: (e) => {
+      const point = getSelectedObject(e);
+      if (!point) return;
+
+      setSelected((prev) => {
+        if (prev.length === 0) {
+          return [point];
+        } else if (prev[0] !== point) {
+          return [...prev, point];
+        } else {
+          board.create("polygon", [...prev, point]);
+          return [];
+        }
+      });
+    },
     circle: (e) => {
       const point = getSelectedObject(e);
       if (!point) return;

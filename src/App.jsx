@@ -1,9 +1,10 @@
-import BoardView from "./board/BoardView";
+import BoardView from "./components/BoardView";
+import ProofEditor from "./proofs/ProofEditor";
 
 function App() {
   return (
     <div>
-      <BoardView />
+      <ProofEditor />
     </div>
   );
 }
