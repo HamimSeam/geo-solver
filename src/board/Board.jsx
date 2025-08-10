@@ -6,11 +6,7 @@ function Board({ boardRef, onAction }) {
     <div
       ref={boardRef}
       id="box"
-      className="jxgbox"
-      style={{
-        width: "1500px",
-        height: "750px",
-      }}
+      className="jxgbox h-full flex-1"
       onClick={onAction}
     ></div>
   );

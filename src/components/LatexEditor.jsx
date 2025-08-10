@@ -13,18 +13,18 @@ function LatexEditor({ value, onChange, isEditing }) {
     return (
       <CodeMirror
         value={value}
-        height="400px"
         basicSetup={{ lineNumbers: false, foldGutter: false }}
         extensions={[StreamLanguage.define(stex), keymap.of(defaultKeymap), history()]}
         onChange={onChange}
         autoFocus
+        style={{ cursor: "pointer", width: "200px" }}
       />
     );
   }
 
   // When not editing, show KaTeX-rendered output
   return (
-    <div style={{ minHeight: 100, cursor: "pointer" }}>
+    <div style={{ cursor: "pointer", width: "200px" }}>
       {value ? (
         <BlockMath math={value} errorColor="#cc0000" />
       ) : (
