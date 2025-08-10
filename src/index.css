@@ -11,3 +11,7 @@
 body {
     margin: 0px;
 }
+
+.cm-editor.cm-focused {
+  outline: none;
+}

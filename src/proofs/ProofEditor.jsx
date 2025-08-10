@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import LatexEditor from "../components/LatexEditor";
 
-let nextId = 1;
+let nextId = 2;
 
-function Proof({ rows, onEditRow }) {
+function Proof({ rows, onEditRow, selected, onSetSelected }) {
+  console.log(selected);
   return (
     <table>
       <thead>
@@ -12,20 +14,20 @@ function Proof({ rows, onEditRow }) {
         </tr>
       </thead>
       <tbody>
-        {rows.map((row, i) => (
-          <tr key={`row-${i}`}>
-            <td>
-              <input
-                type="text"
+        {rows.map((row) => (
+          <tr key={row.id}>
+            <td onClick={() => onSetSelected(`${row.id}-statement`)}>
+              <LatexEditor
                 value={row.statement}
-                onChange={(e) => onEditRow(row.id, "statement", e.target.value)}
+                isEditing={selected === `${row.id}-statement`}
+                onChange={(value) => onEditRow(row.id, "statement", value)}
               />
             </td>
-            <td>
-              <input
-                type="text"
+            <td onClick={() => onSetSelected(`${row.id}-reason`)}>
+              <LatexEditor
                 value={row.reason}
-                onChange={(e) => onEditRow(row.id, "reason", e.target.value)}
+                isEditing={selected === `${row.id}-reason`}
+                onChange={(value) => onEditRow(row.id, "reason", value)}
               />
             </td>
           </tr>
@@ -36,9 +38,9 @@ function Proof({ rows, onEditRow }) {
 }
 
 function ProofEditor() {
-  const [rows, setRows] = useState([
-    { id: "1", statement: "", reason: "Given" },
-  ]);
+  const [rows, setRows] = useState([{ id: 1, statement: "", reason: "Given" }]);
+
+  const [selected, setSelected] = useState(null);
 
   function handleAddRow() {
     // if (rows[rows.length - 1].statement === "") return;
@@ -61,7 +63,12 @@ function ProofEditor() {
   }
   return (
     <div>
-      <Proof rows={rows} onEditRow={handleEditRow} />
+      <Proof
+        rows={rows}
+        onEditRow={handleEditRow}
+        selected={selected}
+        onSetSelected={setSelected}
+      />
       <button
         className="bg-blue-900 text-white p-2 rounded-2xl"
         onClick={handleAddRow}
